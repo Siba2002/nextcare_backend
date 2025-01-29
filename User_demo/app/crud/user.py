@@ -90,7 +90,7 @@ def login_user(db: Session, mobile: str, password: str) -> JSONResponse:
         return JSONResponse(content={"error": "Password mismatch"}, status_code=401)
 
     return JSONResponse(
-        content={"message": f"Hello {db_user.name}, successfully logged in"},
+        content={"user_id": db_user.id, "user_name": db_user.name},
         status_code=200
     )
 
