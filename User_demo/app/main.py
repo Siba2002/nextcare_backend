@@ -5,9 +5,9 @@ from . import models
 from .database import engine
 from .dependencies import get_db
 from .crud.user import create_user,login_user
-from .crud.message import store_message
+from .crud.message import store_message,get_all_message
 from .schemas.user import UserCreate, User, Login, UserBase
-from.schemas.message import MessageCreate
+from .schemas.message import MessageCreate, Messege_get, MessageResponse
 from sqlalchemy.orm import Session
 
 # Uncomment the following line if you need to create the tables manually when the app starts.
@@ -44,3 +44,8 @@ def Message(mesg:MessageCreate,db:Session=Depends(get_db)):
     msgs= store_message(db=db,message=mesg)
     return msgs
 
+@app.get("/message/{user_id}", response_model=list[MessageResponse])
+def get_messages(user_id: int, db: Session = Depends(get_db)):
+    # Call the get_all_message function passing the user_id to get the messages for that user
+    message_data = get_all_message(db=db, message=Messege_get(user_id=user_id))
+    return message_data
