@@ -38,22 +38,44 @@ def create_user(db: Session, user: UserCreate):
 
         return JSONResponse(
             status_code=201,
-            content={"status": "success", "message": "User created", "user_id": db_user.id},
+            content={"status": "success", "message": "User created", "user_id": db_user.id,"user_name":db_user.name},
         )
 
-    except IntegrityError:
+
+    except IntegrityError as e:
+
+        # Rollback on database errors and log them
+
         db.rollback()
+
+
+
         return JSONResponse(
-            status_code=500,
-            content={"status": "error", "message": "Database error while creating user"},
+
+            status_code=400,  # Use 400 for client-side issues like unique constraint violations
+
+            content={"status": "error", "message": "User already exists or invalid data"},
+
         )
 
-    except Exception:
+
+    except Exception as e:
+
+        # Rollback on unexpected errors and log the error
+
         db.rollback()
+
+
+
         return JSONResponse(
+
             status_code=500,
+
             content={"status": "error", "message": "An unexpected error occurred"},
+
         )
+
+
 
 
 
@@ -68,7 +90,10 @@ def login_user(db: Session, mobile: str, password: str) -> JSONResponse:
         return JSONResponse(content={"error": "Password mismatch"}, status_code=401)
 
     return JSONResponse(
-        content={"message": f"Hello {db_user.name}, successfully logged in"},
+        content={"user_id": db_user.id, "user_name": db_user.name},
         status_code=200
     )
+
+
+
 

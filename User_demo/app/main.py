@@ -5,7 +5,9 @@ from . import models
 from .database import engine
 from .dependencies import get_db
 from .crud.user import create_user,login_user
+from .crud.message import store_message
 from .schemas.user import UserCreate, User, Login, UserBase
+from.schemas.message import MessageCreate
 from sqlalchemy.orm import Session
 
 # Uncomment the following line if you need to create the tables manually when the app starts.
@@ -36,3 +38,9 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)) :
 def login(login_data: Login, db: Session = Depends(get_db)):  # Use Login schema here
     login_result = login_user(db=db, mobile=login_data.mobile, password=login_data.password)
     return login_result
+
+@app.post("/MessageCreate")
+def Message(mesg:MessageCreate,db:Session=Depends(get_db)):
+    msgs= store_message(db=db,message=mesg)
+    return msgs
+
