@@ -19,7 +19,7 @@ app.add_middleware(
     allow_origins=["http://localhost:3000"],  # List of allowed origins (React app)
     allow_credentials=True,
     allow_methods=["GET", "POST"],  # Allowed methods
-    allow_headers=["Content-Type", "Authorization"],  # Allowed headers
+    allow_headers=["Content-Type", "Authorization"],  # Allowed headers
 )
 
 @app.get("/")
