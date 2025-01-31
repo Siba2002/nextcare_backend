@@ -84,7 +84,7 @@ def login_user(db: Session, mobile: str, password: str) -> JSONResponse:
     db_user = db.query(User).filter(User.mobile == mobile).first()
 
     if not db_user:
-        return JSONResponse(content={"error": "Invalid credentials"}, status_code=401)
+        return JSONResponse(content={"error": "Invalid User"}, status_code=401)
 
     if not verify_password(db_user.password, password):
         return JSONResponse(content={"error": "Password mismatch"}, status_code=401)

@@ -29,11 +29,7 @@ def store_message(db: Session, message: MessageCreate):
             status_code=500,
             content={"status": "error", "message": "An error occurred while storing the response"},
         )
-from sqlalchemy.orm import Session
-from fastapi.responses import JSONResponse
-from ..models.message import Message
-from ..schemas.message import Messege_get, MessageResponse  # Assuming you have these schemas
-from typing import List
+
 
 def get_all_message(db: Session, message: Messege_get) -> list[Message]:
     try:
